@@ -1,0 +1,7 @@
+build/
+*.iml
+.android/
+.packages
+.pub/
+.vscode/
+.idea/
