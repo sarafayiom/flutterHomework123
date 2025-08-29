@@ -124,121 +124,61 @@ class _TrainingContentState extends State<TrainingContent> {
         Text("Challenge", style: AppStyles.headerMedium),
         const SizedBox(height: 10),
 
-        // SizedBox(
-        //   height: 230,
-        //   child: Obx(() {
-        //     if (homeController.isLoading.value) {
-        //       return const Center(child: CircularProgressIndicator());
-        //     } else if (homeController.userChallenges.value == null) {
-        //       return const Center(child: Text('No Challenge Found'));
-        //     } else {
-        //       UserChallengeModel userChallenges =
-        //           homeController.userChallenges.value!;
-        //       List<Widget> challengeCards = [];
+        SizedBox(
+          height: 230,
+          child: Obx(() {
+            if (homeController.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (homeController.userChallenges.value == null) {
+              return const Center(child: Text('No Challenge Found'));
+            } else {
+              UserChallengeModel userChallenges =
+                  homeController.userChallenges.value!;
+              List<Widget> challengeCards = [];
 
-        //       if (userChallenges.userChallenge != null) {
-        //         challengeCards.add(
-        //           ChallengeCard(
-        //             title: userChallenges.userChallenge!.name,
-        //             description: "4 weeks to achieve your goal!",
-        //             imagePath: 'assets/image/Personalized workouts-amico.png',
-        //             onTap: () {
-        //             final challengeId = userChallenges.userChallenge!.id; 
-        //          Get.to(() => Challenge1Page(challengeId: challengeId));
-        //             },
-        //             showStartButton: true,
-        //           ),
-        //         );
-        //       }
+              if (userChallenges.userChallenge != null) {
+                challengeCards.add(
+                  ChallengeCard(
+                    title: userChallenges.userChallenge!.name,
+                    description: "4 weeks to achieve your goal!",
+                    imagePath: 'assets/image/Personalized workouts-amico.png',
+                    onTap: () {
+                    final challengeId = userChallenges.userChallenge!.id; 
+                 Get.to(() => Challenge1Page(challengeId: challengeId));
+                    },
+                    showStartButton: true,
+                  ),
+                );
+              }
 
-        //       if (userChallenges.publicChallenges != null) {
-        //         for (var publicChallenge
-        //             in userChallenges.publicChallenges!) {
-        //           challengeCards.add(
-        //             ChallengeCard(
-        //               title: publicChallenge.name ?? 'Unnamed Public Challenge',
-        //               imagePath: 'assets/image/Training at home-amico.png',
-        //               onTap: () {
-        //                final int challengeId = publicChallenge.id!;
-        //           Get.to(() => Challenge2Page(challengeId: challengeId));
+              if (userChallenges.publicChallenges != null) {
+                for (var publicChallenge
+                    in userChallenges.publicChallenges!) {
+                  challengeCards.add(
+                    ChallengeCard(
+                      title: publicChallenge.name ?? 'Unnamed Public Challenge',
+                      imagePath: 'assets/image/Training at home-amico.png',
+                      onTap: () {
+                       final int challengeId = publicChallenge.id!;
+                  Get.to(() => Challenge2Page(challengeId: challengeId));
                       
-        //               },
-        //               showStartButton: true,
-        //             ),
-        //           );
-        //         }
-        //       }
+                      },
+                      showStartButton: true,
+                    ),
+                  );
+                }
+              }
 
-        //       return ListView.separated(
-        //         scrollDirection: Axis.horizontal,
-        //         itemCount: challengeCards.length,
-        //         separatorBuilder: (_, __) => const SizedBox(width: 12),
-        //         itemBuilder: (_, i) => challengeCards[i],
-        //       );
-        //     }
-        //   }),
-        // ),
-        // 🔹 قسم التحديات
-SizedBox(
-  height: 230,
-  child: Obx(() {
-    if (homeController.isLoading.value) {
-      
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    final userChallenges = homeController.userChallenges.value;
-
-    if (userChallenges == null) {
-      return const Center(child: Text('No Challenge Found'));
-    }
-
-    List<Widget> challengeCards = [];
-
-   
-    if (userChallenges.userChallenge != null) {
-      challengeCards.add(
-        ChallengeCard(
-          title: userChallenges.userChallenge!.name,
-          description: "4 weeks to achieve your goal!",
-          imagePath: 'assets/image/Personalized workouts-amico.png',
-          onTap: () {
-            final challengeId = userChallenges.userChallenge!.id;
-            Get.to(() => Challenge1Page(challengeId: challengeId));
-          },
-          showStartButton: true,
+              return ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: challengeCards.length,
+                separatorBuilder: (_, __) => const SizedBox(width: 12),
+                itemBuilder: (_, i) => challengeCards[i],
+              );
+            }
+          }),
         ),
-      );
-    }
-
-    // ✅ التحديات العامة
-    if (userChallenges.publicChallenges != null) {
-      for (var publicChallenge in userChallenges.publicChallenges!) {
-        challengeCards.add(
-          ChallengeCard(
-            title: publicChallenge.name ?? 'Unnamed Public Challenge',
-            imagePath: 'assets/image/Training at home-amico.png',
-            onTap: () {
-              final int challengeId = publicChallenge.id!;
-              Get.to(() => Challenge2Page(challengeId: challengeId));
-            },
-            showStartButton: true,
-          ),
-        );
-      }
-    }
-
-    // ✅ عرض الكروت
-    return ListView.separated(
-      scrollDirection: Axis.horizontal,
-      itemCount: challengeCards.length,
-      separatorBuilder: (_, __) => const SizedBox(width: 12),
-      itemBuilder: (_, i) => challengeCards[i],
-    );
-  }),
-),
-
-
+        
         const SizedBox(height: 40),
         Text("Body Focus", style: AppStyles.headerMedium),
         const SizedBox(height: 10),
