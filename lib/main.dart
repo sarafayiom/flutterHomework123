@@ -11,14 +11,17 @@ import 'package:homeworkout_flutter/View/Challenge2Page.dart';
 import 'package:homeworkout_flutter/View/ExerciseDetailPage.dart';
 import 'package:homeworkout_flutter/View/WorkOutDayPage.dart';
 import 'package:homeworkout_flutter/View/create_challenge.dart';
+import 'package:homeworkout_flutter/View/exercisespage.dart';
 import 'package:homeworkout_flutter/View/home.dart';
 import 'package:homeworkout_flutter/View/login.dart';
+import 'package:homeworkout_flutter/View/musclesexercise.dart';
 import 'package:homeworkout_flutter/View/signup..dart';
 import 'package:homeworkout_flutter/View/signup_step3.dart';
 import 'package:homeworkout_flutter/View/signup_step4.dart';
 import 'package:homeworkout_flutter/View/startupscreen.dart';
 import 'package:homeworkout_flutter/View/temporarypage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:homeworkout_flutter/View/timer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,21 +71,78 @@ class _Myapp extends State<MyApp> {
         GetPage(name: '/signup_step4', page: () => SignupStep4()),
         GetPage(name: '/CreateChallenge', page: () => CreateChallenge()),
         GetPage(name: '/TrainingPage', page: () => TrainingPage()),
-        GetPage(name: '/Challenge1Page', page: () => Challenge1Page()),
-        GetPage(name: '/Challenge2Page', page: () => Challenge2Page()),
+        GetPage(
+          name: '/Challenge1Page',
+          page: () {
+            final challengeId = Get.arguments as int;
+            return Challenge1Page(challengeId: challengeId);
+          },
+        ),
+        GetPage(
+          name: '/Challenge2Page',
+          page: () {
+            final challengeId = Get.arguments as int;
+            return Challenge2Page(challengeId: challengeId);
+          },
+        ),
         GetPage(
           name: '/WorkoutDayPage',
           page: () {
             final day = int.tryParse(Get.parameters['day'] ?? '1') ?? 1;
-            return WorkoutDayPage(day: day);
+            final challengeId =
+                int.tryParse(Get.parameters['challengeId'] ?? '0') ?? 0;
+            return WorkoutDayPage(day: day, challengeId: challengeId);
           },
         ),
-        GetPage(name: '/exercise_page', page: () => ExerciseDetailPage()),
+       GetPage(
+  name: '/exercise_page',
+  page: () {
+    final int exerciseId = int.tryParse(Get.parameters['id'] ?? '1') ?? 0;
+
+    final List<dynamic> exercises = Get.arguments?['exercises'] ?? [];
+    final int startIndex = Get.arguments?['startIndex'] ?? 0;
+
+    return ExerciseDetailPage(
+      exerciseId: exerciseId,
+      exercises: exercises,
+      startIndex: startIndex,
+    );
+  },
+),
+
+     GetPage(
+  name: '/WorkoutTimerScreen',
+  page: () {
+    final exercise = Get.arguments; 
+    return WorkoutTimerScreen(exercise: exercise);
+  },
+),
+ GetPage(
+  name: '/TimerScreen',
+  page: () {
+    final exercise = Get.arguments; 
+    return TimerScreen(exercise: exercise ,);
+  },
+),
+
+
+
         GetPage(
-          name: '/WorkoutTimerScreen',
+          name: '/MusclesPage',
           page: () {
-            final int exerciseId = Get.arguments;
-            return WorkoutTimerScreen(exerciseId: exerciseId);
+            final muscleId = Get.parameters['muscleId'] ?? '';
+            final muscleName = Get.parameters['muscleName'] ?? '';
+            return MusclesPage(
+              muscleId: muscleId,
+              muscleName: muscleName,
+            );
+          },
+        ),
+        GetPage(
+          name: '/ExercisesPage',
+          page: () {
+            final type = Get.parameters['type'] ?? '';
+            return ExercisesPage(type: type);
           },
         ),
       ],

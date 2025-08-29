@@ -1,42 +1,51 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:homeworkout_flutter/View/temporarypage.dart';
 import 'package:homeworkout_flutter/controllers/exercises_controller.dart';
 
 class ExerciseDetailPage extends StatefulWidget {
-  const ExerciseDetailPage({super.key});
+  final int exerciseId;
+  final List<dynamic> exercises;
+  final int startIndex;
 
+  const ExerciseDetailPage({
+    super.key,
+    required this.exerciseId,
+    required this.exercises,
+    required this.startIndex,
+  });
   @override
   State<ExerciseDetailPage> createState() => _ExerciseDetailPageState();
 }
 
 class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
   final controller = Get.find<ExercisesController>();
+ 
 
   @override
   void initState() {
     super.initState();
+    controller.fetchExerciseDetail(widget.exerciseId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFDEBD5),
-        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color.fromARGB(255, 243, 230, 215),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Obx(() {
         final exerciseDetail = controller.exerciseDetail.value;
         if (exerciseDetail == null) {
-          return SizedBox();
+          return const SizedBox();
         }
 
         final ex = exerciseDetail.exercise;
 
         return LayoutBuilder(
           builder: (context, constraints) {
-            // double maxWidth = constraints.maxWidth;
-
             return SingleChildScrollView(
               padding: const EdgeInsets.all(8),
               child: ConstrainedBox(
@@ -50,8 +59,10 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                         borderRadius: BorderRadius.circular(25),
                         child: CachedNetworkImage(
                           imageUrl: ex.image,
-                          placeholder: (context, url) =>
-                              const Center(child: CircularProgressIndicator()),
+                          placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                            color: Colors.deepOrangeAccent,
+                          )),
                           errorWidget: (context, url, error) =>
                               const Icon(Icons.error),
                           width: double.infinity,
@@ -69,7 +80,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFF8EF),
+                          color: const Color.fromARGB(255, 247, 238, 228),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: Colors.grey.shade300),
                         ),
@@ -120,19 +131,38 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.toNamed('/WorkoutTimerScreen',
-                                arguments: ex.id);
+                            Get.to(
+                              () => WorkoutTimerScreen(exercise: ex),
+                            );
                           },
+                        
+
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFFF8EF),
-                            minimumSize: const Size(double.infinity, 50),
+                            padding: EdgeInsets.zero,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
+                          ).copyWith(
+                            backgroundColor: WidgetStateProperty.all(
+                              Colors.transparent,
+                            ),
+                            elevation: WidgetStateProperty.all(0),
                           ),
-                          child: const Text(
-                            "Start",
-                            style: TextStyle(fontSize: 18, color: Colors.black),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 247, 238, 228),
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: Colors.grey.shade300),
+                            ),
+                            child: Container(
+                              height: 50,
+                              alignment: Alignment.center,
+                              child: const Text(
+                                "Start",
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.black),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -159,7 +189,7 @@ class InfoBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFF8EF),
+        color: const Color.fromARGB(255, 247, 238, 228),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade300),
       ),

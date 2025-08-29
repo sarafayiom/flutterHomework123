@@ -9,7 +9,7 @@ class AppStyles {
 
   static const TextStyle headerMedium = TextStyle(
     fontSize: 20,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w300,
   );
 
   static const TextStyle bodyText = TextStyle(

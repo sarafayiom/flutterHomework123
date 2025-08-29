@@ -4,7 +4,8 @@ import 'package:homeworkout_flutter/View/WorkOutDayPage.dart';
 import 'package:homeworkout_flutter/Controllers/challenge_controller.dart';
 
 class Challenge1Page extends StatefulWidget {
-  const Challenge1Page({super.key});
+   final int challengeId;
+  const Challenge1Page({super.key, required this.challengeId});
 
   @override
   State<Challenge1Page> createState() => _Challenge1PageState();
@@ -17,7 +18,7 @@ class _Challenge1PageState extends State<Challenge1Page> {
   void initState() {
     super.initState();
  challengeController.loadCachedDay(); 
-challengeController.fetchAvailableDaysFromServer();
+challengeController.fetchAvailableDaysFromServer(widget.challengeId);
  
   }
 
@@ -113,13 +114,12 @@ challengeController.fetchAvailableDaysFromServer();
                                   onTap: isUnlocked
                                       ? () {
                                           Get.to(() => WorkoutDayPage(
-                                              day: globalDayIndex + 1));
+                                              day: globalDayIndex + 1, challengeId: widget.challengeId));
                                         }
                                       : null,
                                   child: CircleAvatar(
                                     backgroundColor: isUnlocked
-                                        ? const Color.fromARGB(
-                                            255, 191, 179, 212)
+                                        ? const Color.fromARGB( 255, 191, 179, 212)
                                         : Colors.grey.shade300,
                                     child: Text(
                                       "${index + 1}",

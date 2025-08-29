@@ -13,7 +13,7 @@ class HomeController extends GetxController {
 
  Future<void> getUserData() async {
     try {
-      isLoading.value = true;
+      //isLoading.value = true;
       userChallenges.value = await ApiUserChallenge().getAllChallenges();
     } catch (e) {
       print('Error: $e');
@@ -24,7 +24,7 @@ class HomeController extends GetxController {
 
   Future<void> createChallenge() async {
     try {
-      isLoading.value = true;
+     // isLoading.value = true;
       bool success = await ApiUserChallenge().generateChallenge();
       if (success) {
         await getUserData();

@@ -12,7 +12,7 @@ class ChallengeController extends GetxController {
   void onInit() {
     super.onInit();
     loadCachedDay(); 
-    fetchAvailableDaysFromServer(); 
+  
   }
 
   void loadCachedDay() {
@@ -21,8 +21,8 @@ class ChallengeController extends GetxController {
     availableDays.value = cachedDay;
   }
 
-  Future<void> fetchAvailableDaysFromServer() async {
-    int challengeId = box.read('idchallenge') ?? 1;
+  Future<void> fetchAvailableDaysFromServer(int challengeId) async {
+ 
 
     int latestAvailable = 1;
 

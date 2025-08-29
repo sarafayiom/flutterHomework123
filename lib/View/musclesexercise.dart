@@ -2,13 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:homeworkout_flutter/View/ExerciseDetailPage.dart';
-import '../controllers/workout_day_controller.dart';
+import 'package:homeworkout_flutter/View/Exercises_by_type.dart';
+import 'package:homeworkout_flutter/controllers/workout_day_controller.dart';
 
-class musclesPage extends StatefulWidget {
+class MusclesPage extends StatefulWidget {
   final String muscleId;
   final String muscleName;
-  const musclesPage({
+  const MusclesPage({
     super.key,
     required this.muscleId,
     required this.muscleName,
@@ -18,16 +18,16 @@ class musclesPage extends StatefulWidget {
   _musclesPageState createState() => _musclesPageState();
 }
 
-class _musclesPageState extends State<musclesPage> {
-  final WorkoutDayController controller = Get.find<WorkoutDayController>();
+class _musclesPageState extends State<MusclesPage> {
+  final WorkoutDayController controller1 = Get.find<WorkoutDayController>();
 
   @override
   void initState() {
     super.initState();
-  
+
     final muscleIdInt = int.tryParse(widget.muscleId) ?? 0;
     if (muscleIdInt != 0) {
-      controller.fetchMuscleExercises(muscleIdInt);
+      controller1.fetchMuscleExercises(muscleIdInt);
     }
   }
 
@@ -45,43 +45,40 @@ class _musclesPageState extends State<musclesPage> {
             fit: StackFit.expand,
             children: [
               Image.asset(
-                'assets/image/images.jfif',
+                'assets/image/240_F_383441501_CLDIkg5Xp2gznsRBw8tYlia2XzfNF4BI.jpg',
                 fit: BoxFit.cover,
               ),
-              Container(color: Colors.black.withOpacity(0.2)),
+              Container(color: Colors.black.withOpacity(0.1)),
               SafeArea(
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () {
-                      Get.back();
-                    },
+                    onPressed: () => Get.back(),
                   ),
                 ),
               ),
             ],
           ),
-         
         ),
       ),
       body: Obx(() {
-        if (controller.errorMessage.isNotEmpty) {
+        if (controller1.errorMessage.isNotEmpty) {
           return Center(
             child: Text(
-              'Error: ${controller.errorMessage.value}',
+              'Error: ${controller1.errorMessage.value}',
               style: const TextStyle(color: Colors.red),
             ),
           );
         }
 
-        final workout = controller.workoutDay.value;
+        final muscleExercise = controller1.muscle.value;
 
-        if (workout == null) {
-          return const Center(child: CircularProgressIndicator());
+        if (muscleExercise == null) {
+          return const Center(child: CircularProgressIndicator(color: Colors.grey,));
         }
 
-        final exercises = workout.exercises;
+        final exercises = muscleExercise.exercises;
 
         return Column(
           children: [
@@ -92,29 +89,20 @@ class _musclesPageState extends State<musclesPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Text(
-                  //   // "DAY ${workout.dayNumber}",
-                  //   "",
-                  //   style: const TextStyle(
-                  //     color: Colors.black,
-                  //     fontSize: 28,
-                  //     fontWeight: FontWeight.bold,
-                  //   ),
-                  // ),
                   const SizedBox(height: 16),
                   Row(
                     children: [
                       Expanded(
                         child: InfoBox(
                           title:
-                              "${workout.totalDurationMinutes.toStringAsFixed(1)} mins",
+                              "${muscleExercise.totalduration.toStringAsFixed(1)} mins",
                           subtitle: "Duration",
                         ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: InfoBox(
-                          title: "${workout.totalExercises}",
+                          title: "${muscleExercise.totalExercises}",
                           subtitle: "Exercises",
                         ),
                       ),
@@ -130,6 +118,7 @@ class _musclesPageState extends State<musclesPage> {
                 itemBuilder: (context, index) {
                   final ex = exercises[index];
                   return Card(
+                    color: const Color.fromARGB(255, 247, 240, 237),
                     elevation: 2,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12)),
@@ -137,8 +126,9 @@ class _musclesPageState extends State<musclesPage> {
                     child: ListTile(
                       onTap: () {
                         final box = GetStorage();
-                        box.write('idexercise', ex.dayExerciseId);
-                        Get.to(() => const ExerciseDetailPage());
+                        box.write('idexercise', ex.id);
+                        print("'idexercise' : ${ex.id}");
+                        Get.to(() => ExercisebyTypePage(exerciseId: ex.id));
                       },
                       contentPadding: const EdgeInsets.all(12),
                       leading: ClipRRect(
@@ -154,45 +144,18 @@ class _musclesPageState extends State<musclesPage> {
                       ),
                       title: Text(
                         ex.name,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.normal, fontSize: 14),
                       ),
                       subtitle: Text(
-                        "x${ex.repetitions}",
-                        style: const TextStyle(fontSize: 12),
+                        "x${ex.durationSeconds}",
+                        style: TextStyle(fontSize: 12),
                       ),
                     ),
                   );
                 },
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all(16),
-            //   child: ElevatedButton(
-            //     style: ElevatedButton.styleFrom(
-            //       backgroundColor: const Color.fromARGB(255, 191, 179, 212),
-            //       minimumSize: const Size(double.infinity, 50),
-            //       shape: RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(30)),
-            //     ),
-            //     onPressed: () async {
-            //       final box = GetStorage();
-            //       final started = box.read('challenge_started') ?? false;
-
-            //       if (!started) {
-            //         try {
-            //           await controller.startchallenge();
-            //           box.write('challenge_started', true);
-            //         } catch (e) {
-            //           print('Start challenge failed: $e');
-            //           return;
-            //         }
-            //       }
-            //     },
-            //     child: const Text("Start",
-            //         style: TextStyle(fontSize: 18, color: Colors.white)),
-            //   ),
-            // ),
           ],
         );
       }),
@@ -211,7 +174,7 @@ class InfoBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: const Color.fromARGB(255, 245, 228, 217),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade300),
       ),

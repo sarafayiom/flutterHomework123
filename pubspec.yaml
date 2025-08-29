@@ -114,7 +114,15 @@ flutter:
     -  assets/image/exercisesimage.jpg
     -  assets/image/exersicesimage.png
     -  assets/image/images.jfif
-    - assets/audio/sport_music.mp3
+    -  assets/image/240_F_383441501_CLDIkg5Xp2gznsRBw8tYlia2XzfNF4BI.jpg
+    -  assets/image/images.png
+    -  assets/image/istockphoto-1324669937-612x612-4.webp
+    -  assets/image/photo_2025-08-22_20-43-46.jpg
+    -  assets/image/photo_2025-08-23_00-50-04.jpg
+    -  assets/image/photo_2025-08-28_20-55-22.jpg
+    -  assets/audio/sport_music.mp3
+    -  assets/audio/counter_sound.mp3
+    -  assets/audio/whistle_sound.mp3
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

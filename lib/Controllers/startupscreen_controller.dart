@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-//import 'package:homeworkout_flutter/View/create_challenge.dart';
 import 'package:homeworkout_flutter/View/home.dart';
 import 'package:homeworkout_flutter/View/signup..dart';
 
@@ -14,7 +13,6 @@ class SplashController extends GetxController {
       waiting.value = false;
      if (box.hasData('access_token')) {
        Get.off(() => TrainingPage());
-      // Get.off(() => CreateChallenge());
       } else {
         Get.off(() => SignUp());
       }

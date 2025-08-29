@@ -9,8 +9,7 @@ class ApiUserChallenge {
   final box = GetStorage();
   final ApiRefreshToken apiRefreshToken = ApiRefreshToken();
 
-  ApiUserChallenge() {
-    _dio.interceptors.add(
+  ApiUserChallenge() { _dio.interceptors.add(
       InterceptorsWrapper(
         onError: (DioException e, ErrorInterceptorHandler handler) async {
           if (e.response?.statusCode == 401) {
@@ -48,13 +47,24 @@ class ApiUserChallenge {
 
       if (response.statusCode == 200) {
         final challenges = UserChallengeModel.fromMap(response.data);
-        final idchallenge = challenges.userChallenge?.id;
-        if (idchallenge != null) {
-          box.write('idchallenge', idchallenge);
-        }
-        return challenges;
+       
+       final idUserChallenge = challenges.userChallenge?.id;
+      if (idUserChallenge != null) {
+        box.write('id_user_challenge', idUserChallenge);
       }
-      return null;
+
+      
+      // if (challenges.publicChallenges != null &&
+      //     challenges.publicChallenges!.isNotEmpty) {
+      //   final publicIds = challenges.publicChallenges!.map((e) =>  e.id)
+      //       .where((id) => id != null)
+      //       .toList();
+      //   box.write('id_public_challenges', publicIds);
+      // }
+
+      return challenges;
+    }
+    return null;
     } catch (e) {
       return null;
     }
